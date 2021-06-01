@@ -6,11 +6,14 @@ namespace HexaGridGame
 {
     public class TileGameManager : MonoBehaviour
     {
-        public HexaTile tilePrefab;
+        [SerializeField]
+        HexaTile tilePrefab;
 
         public HexaTile[,] tiles;
 
         public Vector2Int grid;
+
+        PathFinding pathFinding;
 
         public Camera MainCam { get; private set; }
 
@@ -20,6 +23,8 @@ namespace HexaGridGame
 
             MainCam = Camera.main;
 
+            pathFinding = GetComponent<PathFinding>();
+
             CreateTile();
         }
 
@@ -27,9 +32,14 @@ namespace HexaGridGame
         {
             Debug.Log("Clicked Tile : " + tile.gameObject.name);
 
+            // Tile is Obstacle
             tile.isWall = true;
-
             tile.Renderer.color = Color.black;
+
+            var tiles = tile.Neighbours;
+
+            // FindPath
+            //pathFinding.FindPath();
         }
 
         void CreateTile()
@@ -55,9 +65,17 @@ namespace HexaGridGame
 
                         string name = "_" + i.ToString() + "_" + j.ToString();
                         tiles[i, j].transform.name += name;
+
+                        tiles[i, j].IndexX = j;
+                        tiles[i, j].IndexY = i;
                     }
                 }
             }
+        }
+
+        public void ReloadScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }

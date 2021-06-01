@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0154c56ce6500084b90e20088fbb25e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isWall: 0
 --- !u!1839735485 &790301321173064638
 Tilemap:
   m_ObjectHideFlags: 0
@@ -104,7 +105,7 @@ Tilemap:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6658663292796598672}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Tiles: {}
   m_AnimatedTiles: {}
   m_TileAssetArray: []
