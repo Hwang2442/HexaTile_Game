@@ -15,6 +15,12 @@ namespace HexaGridGame
         public int IndexX { get; set; }
         public int IndexY { get; set; }
 
+        public int TotalCost { get { return CostFromStart + CostToGoal; } } // fCost
+        public int CostFromStart { get; set; }  // gCost
+        public int CostToGoal { get; set; }     // hCost
+
+        public HexaTile Parent { get; set; }
+
         public List<HexaTile> Neighbours
         {
             get
