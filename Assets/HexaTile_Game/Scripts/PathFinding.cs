@@ -7,9 +7,9 @@ namespace HexaGridGame
 
     public class PathFinding : MonoBehaviour
     {
-        public bool escapeEnable;
+        public bool escapeEnable = true;
 
-        public List<HexaTile> path;
+        public List<HexaTile> path = new List<HexaTile>();
 
         TileGameManager Manager;
 
@@ -18,8 +18,10 @@ namespace HexaGridGame
             Manager = GetComponent<TileGameManager>();
         }
 
-        public void FindPath(HexaTile currentTile, HexaTile target)
+        public bool FindPath(HexaTile currentTile, HexaTile target)
         {
+            path.Clear();
+
             // Opened, Closed
             List<HexaTile> opened = new List<HexaTile>();
             HashSet<HexaTile> closed = new HashSet<HexaTile>();
@@ -50,27 +52,7 @@ namespace HexaGridGame
                     }
                 }
 
-                opened.Remove(currentTile);
-                closed.Add(currentTile);
-
-                if (currentTile == target)
-                {
-                    escapeEnable = true;
-
-                    while (currentTile != start)
-                    {
-                        path.Add(currentTile);
-                        currentTile.Renderer.color = Color.green;
-                        currentTile = currentTile.Parent;
-                    }
-
-                    break;
-                }
-
                 currentTile = opened[0];
-
-                if (currentTile == null) break;
-
                 foreach (HexaTile openTile in opened)
                 {
                     if (openTile.TotalCost < currentTile.TotalCost)
@@ -85,18 +67,66 @@ namespace HexaGridGame
                         }
                     }
                 }
+
+                opened.Remove(currentTile);
+                closed.Add(currentTile);
+
+                if (currentTile == target)
+                {
+                    while (currentTile != start)
+                    {
+                        //currentTile.Renderer.color = Color.green;
+                        path.Add(currentTile);
+                        currentTile = currentTile.Parent;
+                    }
+
+                    break;
+                }
             }
+
+            return (path.Count > 0);
         }
 
         int GetDistance(HexaTile from, HexaTile to)
         {
-            bool evenFrom = (from.IndexY % 2) == 0;
-            bool evenTo = (to.IndexY % 2) == 0;
-
             int y = Mathf.Abs(to.IndexY - from.IndexY);
-            int x = Mathf.Abs(to.IndexX - from.IndexX);
+            int x = 0;
 
-            x = Mathf.Max(0, x - 2);
+            int minX = 0, maxX = 0;
+
+            int range = y / 2;
+
+            if (y % 2 == 0)
+            {
+                minX = from.IndexX - range;
+                maxX = from.IndexX + range;
+            }
+            else
+            {
+                // even
+                if (from.IndexY % 2 == 0)
+                {
+                    minX = from.IndexX - (range + 1);
+                    maxX = from.IndexX + range;
+                }
+                else
+                {
+                    minX = from.IndexX - range;
+                    maxX = from.IndexX + (range + 1);
+                }
+            }
+
+            minX = Mathf.Max(0, minX);
+            maxX = Mathf.Min(Manager.grid.x - 1, maxX);
+
+            if (to.IndexX < minX)
+            {
+                x = minX - to.IndexX;
+            }
+            else if (to.IndexX > maxX)
+            {
+                x = to.IndexX - maxX;
+            }
 
             return x + y;
         }

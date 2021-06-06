@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/HexaTile_Game/Scenes/HexaTile_Game.unity
+    guid: abb06e78190a0364d8f3fec36195b6e4
   m_configObjects: {}

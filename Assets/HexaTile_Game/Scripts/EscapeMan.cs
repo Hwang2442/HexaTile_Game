@@ -8,12 +8,18 @@ namespace HexaGridGame
     {
         public HexaTile Tile { get; set; }
 
-        public void Move()
+        public bool Moving { get; private set; }
+
+        public TileGameManager Manager { get; set; }
+
+        public void Move(HexaTile tile)
         {
-            StartCoroutine(Co_Move());
+            Moving = true;
+
+            StartCoroutine(Co_Move(tile));
         }
 
-        IEnumerator Co_Move()
+        IEnumerator Co_Move(HexaTile tile)
         {
             float t = 0;
 
@@ -23,10 +29,18 @@ namespace HexaGridGame
             {
                 t += Time.deltaTime;
 
-                transform.position = Vector3.Lerp(start, Tile.transform.position, t / 0.5f);
+                transform.position = Vector3.Lerp(start, tile.transform.position, t / 0.3f);
 
                 yield return null;
             }
+
+            transform.position = tile.transform.position;
+
+            Tile = tile;
+
+            Moving = false;
+
+            Manager.PlayerOnClearTile(Tile);
         }
     }
 }
