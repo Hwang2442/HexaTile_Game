@@ -34,7 +34,7 @@ namespace HexaGridGame
             {
                 foreach (HexaTile neighbour in currentTile.Neighbours)
                 {
-                    if (!neighbour.isWall && !closed.Contains(neighbour))
+                    if (!neighbour.IsWall && !closed.Contains(neighbour))
                     {
                         int cost = currentTile.CostFromStart + 1;
 

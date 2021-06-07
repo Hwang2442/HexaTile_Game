@@ -6,11 +6,39 @@ namespace HexaGridGame
 {
     public class HexaTile : MonoBehaviour
     {
-        public bool isWall = false;
+        [SerializeField]
+        bool isWall = false;
 
-        public SpriteRenderer Renderer { get; private set; }
+        public bool IsWall 
+        { 
+            get
+            {
+                return isWall;
+            }
+            set
+            {
+                isWall = value;
+
+                ShowWall(isWall);
+            } 
+        }
+
+        SpriteRenderer renderer;
+        public SpriteRenderer Renderer 
+        {
+            get
+            {
+                if (renderer == null)
+                {
+                    renderer = GetComponent<SpriteRenderer>();
+                }
+
+                return renderer;
+            }
+        }
 
         public static TileGameManager Manager { get; set; }
+        public static bool IsTouch { get; set; }
 
         public int IndexX { get; set; }
         public int IndexY { get; set; }
@@ -47,17 +75,17 @@ namespace HexaGridGame
             }
         }
 
-        private void Start()
-        {
-            Renderer = GetComponent<SpriteRenderer>();
-        }
-
         private void OnMouseUpAsButton()
         {
-            if (Manager != null)
+            if (Manager != null && IsTouch)
             {
                 Manager.OnTileClicked(this);
             }
+        }
+
+        public void ShowWall(bool active)
+        {
+            transform.GetChild(transform.childCount - 1).gameObject.SetActive(active);
         }
     }
 }

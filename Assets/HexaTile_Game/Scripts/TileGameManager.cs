@@ -18,8 +18,7 @@ namespace HexaGridGame
         // Escape Player
         public EscapeMan player;
 
-        [SerializeField]
-        int wallNum;
+        public int wallNum;
 
         PathFinding pathFinding;
 
@@ -31,9 +30,10 @@ namespace HexaGridGame
 
         public Camera MainCam { get; private set; }
 
-        private IEnumerator Start()
+        private void Start()
         {
             HexaTile.Manager = this;
+            HexaTile.IsTouch = true;
             MainCam = Camera.main;
             pathFinding = GetComponent<PathFinding>();
 
@@ -44,25 +44,24 @@ namespace HexaGridGame
             // Player Setting
             player.Manager = this;
             player.Tile = tiles[grid.y / 2, grid.x / 2];
-            player.transform.position = player.Tile.transform.position;
-            player.gameObject.SetActive(true);
 
-            yield return null;
-
-            for (int i = 0; i < wallNum; i++)
+            if (tiles.Length > wallNum)
             {
-                Vector2Int index = new Vector2Int(Random.Range(0, grid.x), Random.Range(0, grid.y));
-
-                HexaTile tile = tiles[index.y, index.x];
-
-                if (tile.isWall || tile == player.Tile)
+                for (int i = 0; i < wallNum; i++)
                 {
-                    i--;
-                    continue;
-                }
+                    Vector2Int index = new Vector2Int(Random.Range(0, grid.x), Random.Range(0, grid.y));
 
-                tile.isWall = true;
-                tile.Renderer.color = Color.black;
+                    HexaTile tile = tiles[index.y, index.x];
+
+                    if (tile.IsWall || tile == player.Tile)
+                    {
+                        i--;
+                        continue;
+                    }
+
+                    tile.IsWall = true;
+                    tile.Renderer.color = Color.black;
+                }
             }
         }
 
@@ -70,10 +69,10 @@ namespace HexaGridGame
         {
             Debug.Log("Clicked Tile : " + tile.gameObject.name);
 
-            if (tile == player.Tile || player.Moving || resultText.transform.parent.gameObject.activeSelf) return;
+            if (tile == player.Tile || player.Moving) return;
 
             // Tile is Obstacle
-            tile.isWall = true;
+            tile.IsWall = true;
             tile.Renderer.color = Color.black;
 
             // FindPath
@@ -84,7 +83,7 @@ namespace HexaGridGame
             bool isLock = true;
             for (int i = 0; i < negibours.Count; i++)
             {
-                if (!negibours[i].isWall)
+                if (!negibours[i].IsWall)
                 {
                     isLock = false;
 
@@ -104,7 +103,7 @@ namespace HexaGridGame
             {
                 int random = Random.Range(0, negibours.Count);
 
-                if (!negibours[random].isWall)
+                if (!negibours[random].IsWall)
                 {
                     nextTile = negibours[random];
                 }
@@ -115,7 +114,7 @@ namespace HexaGridGame
             {
                 for (int i = 0; i < escapeTiles.Count; i++)
                 {
-                    if (!escapeTiles[i].isWall)
+                    if (!escapeTiles[i].IsWall)
                     {
                         if (pathFinding.FindPath(player.Tile, escapeTiles[i]))
                         {
@@ -133,6 +132,8 @@ namespace HexaGridGame
                 player.Move(nextTile);
             }
         }
+
+
 
         public void PlayerOnClearTile(HexaTile tile)
         {
@@ -187,11 +188,6 @@ namespace HexaGridGame
                     }
                 }
             }
-        }
-
-        public void ReloadScene()
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }
