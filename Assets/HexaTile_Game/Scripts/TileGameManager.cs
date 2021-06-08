@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Linq;
 
 namespace HexaGridGame
@@ -25,8 +26,9 @@ namespace HexaGridGame
         [SerializeField]
         List<HexaTile> escapeTiles = new List<HexaTile>();
 
-        [SerializeField]
-        Text resultText;
+        [Space]
+        public UnityEvent onVictory;
+        public UnityEvent onDefeat;
 
         public Camera MainCam { get; private set; }
 
@@ -37,13 +39,12 @@ namespace HexaGridGame
             MainCam = Camera.main;
             pathFinding = GetComponent<PathFinding>();
 
-            resultText.transform.parent.gameObject.SetActive(false);
-
             CreateTile();
 
             // Player Setting
             player.Manager = this;
             player.Tile = tiles[grid.y / 2, grid.x / 2];
+            player.transform.position = player.Tile.transform.position + Vector3.up * 0.2f;
 
             if (tiles.Length > wallNum)
             {
@@ -91,10 +92,10 @@ namespace HexaGridGame
                 }
             }
 
+            // Victory!!
             if (isLock)
             {
-                resultText.text = "YOU WIN!!";
-                resultText.transform.parent.gameObject.SetActive(true);
+                onVictory.Invoke();
 
                 return;
             }
@@ -139,8 +140,7 @@ namespace HexaGridGame
         {
             if (escapeTiles.Contains(tile))
             {
-                resultText.text = "YOU LOSE!!";
-                resultText.transform.parent.gameObject.SetActive(true);
+                onDefeat.Invoke();
             }
         }
 

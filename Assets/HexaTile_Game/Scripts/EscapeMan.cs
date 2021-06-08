@@ -14,7 +14,7 @@ namespace HexaGridGame
 
         private void Start()
         {
-            transform.position += Vector3.up * 0.2f;
+            //transform.position += Vector3.up * 0.2f;
 
             Debug.Log("start");
         }
