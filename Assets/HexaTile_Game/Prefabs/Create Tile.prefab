@@ -143,9 +143,14 @@ MonoBehaviour:
     type: 3}
   grid: {x: 9, y: 9}
   player: {fileID: 1962738454151912854}
-  wallNum: 5
+  wallNum: 10
   escapeTiles: []
-  resultText: {fileID: 0}
+  onVictory:
+    m_PersistentCalls:
+      m_Calls: []
+  onDefeat:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1962738454488012383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,5 +163,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c425327db1f005499c71b689bae785b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escapeEnable: 1
   path: []

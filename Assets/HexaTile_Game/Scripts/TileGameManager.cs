@@ -148,8 +148,8 @@ namespace HexaGridGame
         {
             if (grid.x > 0 && grid.y > 0)
             {
-                grid.x = Mathf.Min(grid.x, 9);
-                grid.y = Mathf.Min(grid.y, 9);
+                grid.x = Mathf.Clamp(grid.x, 3, 9);
+                grid.y = Mathf.Clamp(grid.y, 3, 9);
 
                 // Setup LeftTop Tile position
                 Vector2 startPosition = new Vector2(Mathf.CeilToInt(grid.x * -1 * 0.5f), Mathf.FloorToInt(grid.y * 0.5f));

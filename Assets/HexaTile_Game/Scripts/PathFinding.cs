@@ -7,8 +7,6 @@ namespace HexaGridGame
 
     public class PathFinding : MonoBehaviour
     {
-        public bool escapeEnable = true;
-
         public List<HexaTile> path = new List<HexaTile>();
 
         TileGameManager Manager;
