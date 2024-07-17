@@ -9,6 +9,9 @@ namespace HexaGridGame
 {
     public class TileGameManager : MonoBehaviour
     {
+        private const float xInterval = 1.905354f;
+        private const float zInterval = 1.65f;
+
         [SerializeField]
         HexaTile tilePrefab;
 
@@ -152,7 +155,7 @@ namespace HexaGridGame
                 grid.y = Mathf.Clamp(grid.y, 3, 9);
 
                 // Setup LeftTop Tile position
-                Vector2 startPosition = new Vector2(Mathf.CeilToInt(grid.x * -1 * 0.5f), Mathf.FloorToInt(grid.y * 0.5f));
+                Vector3 startPosition = new Vector3(Mathf.CeilToInt(grid.x * -1 * 0.5f), 0, Mathf.FloorToInt(grid.y * 0.5f));
 
                 tiles = new HexaTile[grid.y, grid.x];
 
@@ -160,13 +163,13 @@ namespace HexaGridGame
                 {
                     bool even = (i % 2 == 0);
 
-                    float x = even ? startPosition.x : startPosition.x + 0.5f;
-                    float y = startPosition.y - i;
+                    float x = even ? startPosition.x : startPosition.x + xInterval * 0.5f;
+                    float z = startPosition.z - i;
 
                     for (int j = 0; j < grid.x; j++)
                     {
                         tiles[i, j] = Instantiate(tilePrefab, transform);
-                        tiles[i, j].transform.position = new Vector3(x + j, y);
+                        tiles[i, j].transform.position = new Vector3(x + j * xInterval, 0, z * zInterval);
 
                         string name = "_" + i.ToString() + "_" + j.ToString();
                         tiles[i, j].transform.name += name;
