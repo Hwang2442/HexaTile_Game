@@ -47,7 +47,7 @@ namespace HexaGridGame
             // Player Setting
             player.Manager = this;
             player.Tile = tiles[grid.y / 2, grid.x / 2];
-            player.transform.position = player.Tile.transform.position + Vector3.up * 0.2f;
+            player.transform.position = player.Tile.transform.position/* + Vector3.up * 0.2f*/;
 
             if (tiles.Length > wallNum)
             {
