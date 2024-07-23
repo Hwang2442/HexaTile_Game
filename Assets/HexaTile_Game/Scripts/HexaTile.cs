@@ -23,14 +23,14 @@ namespace HexaGridGame
             } 
         }
 
-        SpriteRenderer renderer;
-        public SpriteRenderer Renderer 
+        MeshRenderer renderer;
+        public MeshRenderer Renderer 
         {
             get
             {
                 if (renderer == null)
                 {
-                    renderer = GetComponent<SpriteRenderer>();
+                    renderer = GetComponent<MeshRenderer>();
                 }
 
                 return renderer;

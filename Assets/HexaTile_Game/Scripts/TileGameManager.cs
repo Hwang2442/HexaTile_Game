@@ -64,7 +64,7 @@ namespace HexaGridGame
                     }
 
                     tile.IsWall = true;
-                    tile.Renderer.color = Color.black;
+                    //tile.Renderer.color = Color.black;
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace HexaGridGame
 
             // Tile is Obstacle
             tile.IsWall = true;
-            tile.Renderer.color = Color.black;
+            //tile.Renderer.color = Color.black;
 
             // FindPath
             int count = 999;
