@@ -13,7 +13,7 @@ namespace HexaGridGame
         private const float zInterval = 1.65f;
 
         [SerializeField]
-        HexaTile tilePrefab;
+        private HexaTile[] tilePrefabs;
 
         // Tiles ang Grid
         public HexaTile[,] tiles;
@@ -168,7 +168,9 @@ namespace HexaGridGame
 
                     for (int j = 0; j < grid.x; j++)
                     {
-                        tiles[i, j] = Instantiate(tilePrefab, transform);
+                        var target = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
+
+                        tiles[i, j] = Instantiate(target, transform);
                         tiles[i, j].transform.position = new Vector3(x + j * xInterval, 0, z * zInterval);
 
                         string name = "_" + i.ToString() + "_" + j.ToString();
