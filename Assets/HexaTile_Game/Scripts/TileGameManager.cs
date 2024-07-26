@@ -170,26 +170,25 @@ namespace HexaGridGame
                     {
                         var target = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
 
-                        tiles[i, j] = Instantiate(target, transform);
-                        tiles[i, j].transform.position = new Vector3(x + j * xInterval, 0, z * zInterval);
+                        var tile = Instantiate(target, transform);
+                        tile.transform.localPosition = new Vector3(x + j * xInterval, 0, z * zInterval);
+                        tile.transform.localRotation = Quaternion.Euler(0, 60 * Random.Range(0, 6), 0);
 
                         string name = "_" + i.ToString() + "_" + j.ToString();
-                        tiles[i, j].transform.name += name;
+                        tile.transform.name += name;
 
-                        tiles[i, j].IndexX = j;
-                        tiles[i, j].IndexY = i;
+                        tile.IndexX = j;
+                        tile.IndexY = i;
 
                         if (i == 0 || i == grid.y - 1)
-                        {
-                            escapeTiles.Add(tiles[i, j]);
-                        }
+                            escapeTiles.Add(tile);
                         else
                         {
                             if (j == 0 || j == grid.x - 1)
-                            {
-                                escapeTiles.Add(tiles[i, j]);
-                            }
+                                escapeTiles.Add(tile);
                         }
+
+                        tiles[i, j] = tile;
                     }
                 }
             }
