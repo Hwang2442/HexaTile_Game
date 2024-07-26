@@ -85,7 +85,7 @@ namespace HexaGridGame
 
         public void ShowWall(bool active)
         {
-            transform.GetChild(transform.childCount - 1).gameObject.SetActive(active);
+            //transform.GetChild(transform.childCount - 1).gameObject.SetActive(active);
         }
     }
 }
