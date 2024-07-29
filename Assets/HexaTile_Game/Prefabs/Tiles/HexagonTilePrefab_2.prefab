@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2006995784349638399}
   - component: {fileID: 161913488164446340}
   - component: {fileID: 5510971801799489731}
+  - component: {fileID: 3565101147373404461}
   m_Layer: 0
   m_Name: HexagonTilePrefab_2
   m_TagString: Untagged
@@ -97,3 +98,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWall: 0
+--- !u!64 &3565101147373404461
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804176441378463298}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4301204, guid: 1654b14ee3ed000499e134b35fee6e58, type: 3}
