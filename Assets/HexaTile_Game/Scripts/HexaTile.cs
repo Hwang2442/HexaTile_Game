@@ -19,7 +19,7 @@ namespace HexaGridGame
             {
                 isWall = value;
 
-                ShowWall(isWall);
+                //ShowWall(isWall);
             } 
         }
 

@@ -12,8 +12,8 @@ namespace HexaGridGame
         private const float xInterval = 1.905354f;
         private const float zInterval = 1.65f;
 
-        [SerializeField]
-        private HexaTile[] tilePrefabs;
+        [SerializeField] private HexaTile[] tilePrefabs;
+        [SerializeField] private GameObject[] wallPrefabs;
 
         // Tiles ang Grid
         public HexaTile[,] tiles;
@@ -26,8 +26,7 @@ namespace HexaGridGame
 
         PathFinding pathFinding;
 
-        [SerializeField]
-        List<HexaTile> escapeTiles = new List<HexaTile>();
+        [SerializeField] List<HexaTile> escapeTiles = new List<HexaTile>();
 
         [Space]
         public UnityEvent onVictory;
@@ -78,6 +77,8 @@ namespace HexaGridGame
             // Tile is Obstacle
             tile.IsWall = true;
             //tile.Renderer.color = Color.black;
+            GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
+            wallObj.transform.position += tile.transform.position;
 
             // FindPath
             int count = 999;
