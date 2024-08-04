@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using System.Linq;
+
+using DG.Tweening;
 
 namespace HexaGridGame
 {
@@ -79,6 +81,7 @@ namespace HexaGridGame
             //tile.Renderer.color = Color.black;
             GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
             wallObj.transform.position += tile.transform.position;
+            wallObj.transform.DOMoveY(wallObj.transform.position.y, 0.667f).From(1).SetEase(Ease.OutCirc);
 
             // FindPath
             int count = 999;
