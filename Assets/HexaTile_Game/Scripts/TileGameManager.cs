@@ -16,6 +16,7 @@ namespace HexaGridGame
 
         [SerializeField] private HexaTile[] tilePrefabs;
         [SerializeField] private GameObject[] wallPrefabs;
+        [SerializeField] private ParticleSystem particle;
 
         // Tiles ang Grid
         public HexaTile[,] tiles;
@@ -81,7 +82,13 @@ namespace HexaGridGame
             //tile.Renderer.color = Color.black;
             GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
             wallObj.transform.position += tile.transform.position;
-            wallObj.transform.DOMoveY(wallObj.transform.position.y, 0.667f).From(1).SetEase(Ease.OutCirc);
+            wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
+            {
+                
+            });
+
+            particle.transform.position = tile.transform.position;
+            particle.Play();
 
             // FindPath
             int count = 999;
