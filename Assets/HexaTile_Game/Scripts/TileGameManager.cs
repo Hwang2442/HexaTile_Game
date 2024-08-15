@@ -44,12 +44,14 @@ namespace HexaGridGame
             MainCam = Camera.main;
             pathFinding = GetComponent<PathFinding>();
 
-            CreateTile();
-
-            // Player Setting
             player.Manager = this;
-            player.Tile = tiles[grid.y / 2, grid.x / 2];
-            player.transform.position = player.Tile.transform.position/* + Vector3.up * 0.2f*/;
+            CreateTile(() =>
+            {
+                // Player Setting
+                player.Tile = tiles[grid.y / 2, grid.x / 2];
+                Vector3 pos = player.Tile.transform.position;
+                player.transform.position = pos;
+            });
 
             if (tiles.Length > wallNum)
             {
@@ -66,7 +68,6 @@ namespace HexaGridGame
                     }
 
                     tile.IsWall = true;
-                    //tile.Renderer.color = Color.black;
                 }
             }
         }
@@ -158,49 +159,54 @@ namespace HexaGridGame
             }
         }
 
-        void CreateTile()
+        void CreateTile(UnityAction onComplete)
         {
-            if (grid.x > 0 && grid.y > 0)
+            if (grid.x <= 0 || grid.y <= 0)
+                return;
+
+            grid.x = Mathf.Clamp(grid.x, 3, 9);
+            grid.y = Mathf.Clamp(grid.y, 3, 9);
+
+            // Setup LeftTop Tile position
+            Vector3 startPosition = new Vector3(Mathf.CeilToInt(grid.x * -1 * 0.5f), 0, Mathf.FloorToInt(grid.y * 0.5f));
+
+            tiles = new HexaTile[grid.y, grid.x];
+            for (int i = 0; i < grid.y; i++)
             {
-                grid.x = Mathf.Clamp(grid.x, 3, 9);
-                grid.y = Mathf.Clamp(grid.y, 3, 9);
+                bool even = (i % 2 == 0);
+                float x = even ? startPosition.x : startPosition.x + xInterval * 0.5f;
+                float z = startPosition.z - i;
 
-                // Setup LeftTop Tile position
-                Vector3 startPosition = new Vector3(Mathf.CeilToInt(grid.x * -1 * 0.5f), 0, Mathf.FloorToInt(grid.y * 0.5f));
-
-                tiles = new HexaTile[grid.y, grid.x];
-
-                for (int i = 0; i < grid.y; i++)
+                for (int j = 0; j < grid.x; j++)
                 {
-                    bool even = (i % 2 == 0);
+                    var target = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
 
-                    float x = even ? startPosition.x : startPosition.x + xInterval * 0.5f;
-                    float z = startPosition.z - i;
+                    var tile = Instantiate(target, transform);
+                    tile.transform.localPosition = new Vector3(x + j * xInterval, 0, z * zInterval);
+                    tile.transform.localRotation = Quaternion.Euler(0, 60 * Random.Range(0, 6), 0);
 
-                    for (int j = 0; j < grid.x; j++)
+                    string name = "_" + i.ToString() + "_" + j.ToString();
+                    tile.transform.name += name;
+
+                    tile.IndexX = j;
+                    tile.IndexY = i;
+
+                    if (i == 0 || i == grid.y - 1)
+                        escapeTiles.Add(tile);
+                    else
                     {
-                        var target = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
-
-                        var tile = Instantiate(target, transform);
-                        tile.transform.localPosition = new Vector3(x + j * xInterval, 0, z * zInterval);
-                        tile.transform.localRotation = Quaternion.Euler(0, 60 * Random.Range(0, 6), 0);
-
-                        string name = "_" + i.ToString() + "_" + j.ToString();
-                        tile.transform.name += name;
-
-                        tile.IndexX = j;
-                        tile.IndexY = i;
-
-                        if (i == 0 || i == grid.y - 1)
+                        if (j == 0 || j == grid.x - 1)
                             escapeTiles.Add(tile);
-                        else
-                        {
-                            if (j == 0 || j == grid.x - 1)
-                                escapeTiles.Add(tile);
-                        }
-
-                        tiles[i, j] = tile;
                     }
+
+                    tiles[i, j] = tile;
+
+                    // Create tile animation
+                    var tween = tile.transform.DOLocalMoveY(0, 0.2f).From(-4).SetDelay((i + j) * 0.1f).SetEase(Ease.OutBack).Pause();
+                    if (i == grid.y - 1 && j == grid.x - 1)
+                        tween.onComplete += onComplete.Invoke;
+
+                    tween.Play();
                 }
             }
         }
