@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
-    private AudioSource source;
+    [SerializeField] private AudioSource source;
 
     public void Play(string name, AudioSource source = null)
     {

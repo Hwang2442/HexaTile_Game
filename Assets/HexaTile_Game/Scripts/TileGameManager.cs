@@ -39,6 +39,8 @@ namespace HexaGridGame
 
         private void Start()
         {
+            SoundManager.Instance.Play("BGM");
+
             HexaTile.Manager = this;
             HexaTile.IsTouch = true;
             MainCam = Camera.main;
@@ -87,7 +89,7 @@ namespace HexaGridGame
             wallObj.transform.position += tile.transform.position;
             wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
             {
-                
+                SoundManager.Instance.PlayOneShot("Wall");
             });
 
             particle.transform.position = tile.transform.position;
@@ -148,6 +150,7 @@ namespace HexaGridGame
                 player.Tile = nextTile;
 
                 player.Move(nextTile);
+                SoundManager.Instance.PlayOneShot("Jump");
             }
         }
 
@@ -205,6 +208,7 @@ namespace HexaGridGame
 
                     // Create tile animation
                     var tween = tile.transform.DOLocalMoveY(0, 0.2f).From(-4).SetDelay((i + j) * 0.1f).SetEase(Ease.OutBack).Pause();
+                    tween.OnStart(() => SoundManager.Instance.PlayOneShot("CreateTile"));
                     if (i == grid.y - 1 && j == grid.x - 1)
                         tween.onComplete += onComplete.Invoke;
 
