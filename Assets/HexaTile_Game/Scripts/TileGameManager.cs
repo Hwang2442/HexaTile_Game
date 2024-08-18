@@ -45,12 +45,14 @@ namespace HexaGridGame
             pathFinding = GetComponent<PathFinding>();
 
             player.Manager = this;
+            player.gameObject.SetActive(false);
             CreateTile(() =>
             {
                 // Player Setting
                 player.Tile = tiles[grid.y / 2, grid.x / 2];
                 Vector3 pos = player.Tile.transform.position;
                 player.transform.position = pos;
+                player.gameObject.SetActive(true);
             });
 
             if (tiles.Length > wallNum)
