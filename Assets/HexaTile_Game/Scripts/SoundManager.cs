@@ -25,13 +25,15 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
     [SerializeField] private AudioSource source;
 
-    public void Play(string name, AudioSource source = null)
+    public void Play(string name, float volume = 1, bool loop = true, AudioSource source = null)
     {
         var clip = sounds.FirstOrDefault(s => s.name == name);
         if (clip != null)
         {
             AudioSource target = source == null ? this.source : source;
             target.clip = clip;
+            target.loop = loop;
+            target.volume = volume;
             target.Play();
         }
     }

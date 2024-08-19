@@ -14,9 +14,15 @@ namespace HexaGridGame
         private const float xInterval = 1.905354f;
         private const float zInterval = 1.65f;
 
+        [Header("Tile")]
         [SerializeField] private HexaTile[] tilePrefabs;
+        [SerializeField] private ParticleSystem failTileParticle;
+
+        [Header("Wall")]
         [SerializeField] private GameObject[] wallPrefabs;
-        [SerializeField] private ParticleSystem particle;
+        [SerializeField] private ParticleSystem wallParticle;
+
+
 
         // Tiles ang Grid
         public HexaTile[,] tiles;
@@ -39,7 +45,7 @@ namespace HexaGridGame
 
         private void Start()
         {
-            SoundManager.Instance.Play("BGM");
+            SoundManager.Instance.Play("BGM", 0.5f);
 
             HexaTile.Manager = this;
             HexaTile.IsTouch = true;
@@ -92,8 +98,8 @@ namespace HexaGridGame
                 SoundManager.Instance.PlayOneShot("Wall");
             });
 
-            particle.transform.position = tile.transform.position;
-            particle.Play();
+            wallParticle.transform.position = tile.transform.position;
+            wallParticle.Play();
 
             // FindPath
             int count = 999;
@@ -214,6 +220,13 @@ namespace HexaGridGame
 
                     tween.Play();
                 }
+            }
+
+            foreach (var escapeTile in escapeTiles)
+            {
+                var fx = Instantiate(failTileParticle, escapeTile.transform);
+                fx.transform.localPosition = new Vector3(0, 0.01f, 0);
+                fx.transform.localRotation = Quaternion.identity;
             }
         }
     }
