@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace HexaGridGame
 {
@@ -18,8 +19,6 @@ namespace HexaGridGame
             set
             {
                 isWall = value;
-
-                //ShowWall(isWall);
             } 
         }
 
@@ -83,9 +82,30 @@ namespace HexaGridGame
             }
         }
 
-        public void ShowWall(bool active)
+        public void SetWall(GameObject wallObj, ParticleSystem particle, bool useAnimation = true)
         {
-            //transform.GetChild(transform.childCount - 1).gameObject.SetActive(active);
+            wallObj.transform.position += transform.position;
+            if (useAnimation)
+            {
+                wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
+                {
+                    SoundManager.Instance.PlayOneShot("Wall");
+                });
+            }
+            else
+            {
+                wallObj.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+                SoundManager.Instance.PlayOneShot("Wall");
+            }
+
+            if (particle.isPlaying)
+            {
+                particle = Instantiate(particle, transform.position, Quaternion.identity);
+                var main = particle.main;
+                main.stopAction = ParticleSystemStopAction.Destroy;
+            }
+            particle.transform.position = transform.position;
+            particle.Play();
         }
     }
 }

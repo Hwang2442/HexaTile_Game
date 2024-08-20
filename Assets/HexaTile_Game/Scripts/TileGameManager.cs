@@ -61,25 +61,27 @@ namespace HexaGridGame
                 Vector3 pos = player.Tile.transform.position;
                 player.transform.position = pos;
                 player.gameObject.SetActive(true);
-            });
 
-            if (tiles.Length > wallNum)
-            {
-                for (int i = 0; i < wallNum; i++)
+                if (tiles.Length > wallNum)
                 {
-                    Vector2Int index = new Vector2Int(Random.Range(0, grid.x), Random.Range(0, grid.y));
-
-                    HexaTile tile = tiles[index.y, index.x];
-
-                    if (tile.IsWall || tile == player.Tile)
+                    for (int i = 0; i < wallNum; i++)
                     {
-                        i--;
-                        continue;
-                    }
+                        Vector2Int index = new Vector2Int(Random.Range(0, grid.x), Random.Range(0, grid.y));
 
-                    tile.IsWall = true;
+                        HexaTile tile = tiles[index.y, index.x];
+
+                        if (tile.IsWall || tile == player.Tile)
+                        {
+                            i--;
+                            continue;
+                        }
+
+                        tile.IsWall = true;
+                        GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
+                        tile.SetWall(wallObj, wallParticle, false);
+                    }
                 }
-            }
+            });
         }
 
         public void OnTileClicked(HexaTile tile)
@@ -90,16 +92,16 @@ namespace HexaGridGame
 
             // Tile is Obstacle
             tile.IsWall = true;
-            //tile.Renderer.color = Color.black;
             GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
-            wallObj.transform.position += tile.transform.position;
-            wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
-            {
-                SoundManager.Instance.PlayOneShot("Wall");
-            });
+            tile.SetWall(wallObj, wallParticle);
+            //wallObj.transform.position += tile.transform.position;
+            //wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
+            //{
+            //    SoundManager.Instance.PlayOneShot("Wall");
+            //});
 
-            wallParticle.transform.position = tile.transform.position;
-            wallParticle.Play();
+            //wallParticle.transform.position = tile.transform.position;
+            //wallParticle.Play();
 
             // FindPath
             int count = 999;
