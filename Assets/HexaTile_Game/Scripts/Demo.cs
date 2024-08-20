@@ -61,6 +61,15 @@ namespace HexaGridGame
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.MenuItem("Tools/ScreenCapture")]
+        private static void SaveScreenshot()
+        {
+            ScreenCapture.CaptureScreenshot("Screenshot.png");
+        }
+#endif
+
     }
 }
 
