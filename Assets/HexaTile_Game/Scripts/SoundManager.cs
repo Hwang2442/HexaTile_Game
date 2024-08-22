@@ -3,48 +3,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+namespace HexaGridGame
 {
-    #region Instance
-
-    private static SoundManager instance;
-
-    public static SoundManager Instance
+    public class SoundManager : MonoBehaviour
     {
-        get 
-        {
-            if (instance == null)
-                instance = FindObjectOfType<SoundManager>();
+        #region Instance
 
-            return instance; 
+        private static SoundManager instance;
+
+        public static SoundManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = FindObjectOfType<SoundManager>();
+
+                return instance;
+            }
         }
-    }
 
-    #endregion
+        #endregion
 
-    [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
-    [SerializeField] private AudioSource source;
+        [SerializeField] private List<AudioClip> sounds = new List<AudioClip>();
+        [SerializeField] private AudioSource source;
 
-    public void Play(string name, float volume = 1, bool loop = true, AudioSource source = null)
-    {
-        var clip = sounds.FirstOrDefault(s => s.name == name);
-        if (clip != null)
+        public void Play(string name, float volume = 1, bool loop = true, AudioSource source = null)
         {
-            AudioSource target = source == null ? this.source : source;
-            target.clip = clip;
-            target.loop = loop;
-            target.volume = volume;
-            target.Play();
+            var clip = sounds.FirstOrDefault(s => s.name == name);
+            if (clip != null)
+            {
+                AudioSource target = source == null ? this.source : source;
+                target.clip = clip;
+                target.loop = loop;
+                target.volume = volume;
+                target.Play();
+            }
         }
-    }
 
-    public void PlayOneShot(string name, AudioSource source = null)
-    {
-        var clip = sounds.FirstOrDefault(s => s.name == name);
-        if (clip != null)
+        public void PlayOneShot(string name, AudioSource source = null)
         {
-            AudioSource target = source == null ? this.source : source;
-            target.PlayOneShot(clip);
+            var clip = sounds.FirstOrDefault(s => s.name == name);
+            if (clip != null)
+            {
+                AudioSource target = source == null ? this.source : source;
+                target.PlayOneShot(clip);
+            }
         }
     }
 }
