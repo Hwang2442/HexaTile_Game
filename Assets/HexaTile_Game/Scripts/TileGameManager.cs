@@ -14,34 +14,28 @@ namespace HexaGridGame
         private const float xInterval = 1.905354f;
         private const float zInterval = 1.65f;
 
-        [Header("Tile")]
-        [SerializeField] private HexaTile[] tilePrefabs;
-        [SerializeField] private ParticleSystem failTileParticle;
-
-        [Header("Wall")]
-        [SerializeField] private GameObject[] wallPrefabs;
+        [Header("Setting")]
+        [SerializeField] private TileManagerSettingTable settingTable;
+        [SerializeField] private TileManagerSettingTable.Level selectedLevel;
         [SerializeField] private ParticleSystem wallParticle;
+        [SerializeField] private EscapeMan player;
 
-
-
-        // Tiles ang Grid
-        public HexaTile[,] tiles;
-        public Vector2Int grid;
-
-        // Escape Player
-        public EscapeMan player;
-
-        public int wallNum;
-
-        PathFinding pathFinding;
-
+        [Header("Tile")]
+        [SerializeField] private Vector2Int grid;
+        [SerializeField] private HexaTile[,] tiles;
         [SerializeField] List<HexaTile> escapeTiles = new List<HexaTile>();
 
+
+        private PathFinding pathFinding;
+
         [Space]
-        public UnityEvent onVictory;
-        public UnityEvent onDefeat;
+        [SerializeField] private UnityEvent onVictory;
+        [SerializeField] private UnityEvent onDefeat;
 
         public Camera MainCam { get; private set; }
+        public HexaTile[,] Tiles => tiles;
+        public Vector2Int Grid => grid;
+        public EscapeMan Player => player;
 
         private void Start()
         {
@@ -62,9 +56,9 @@ namespace HexaGridGame
                 player.transform.position = pos;
                 player.gameObject.SetActive(true);
 
-                if (tiles.Length > wallNum)
+                if (tiles.Length > selectedLevel.StartWallCount)
                 {
-                    for (int i = 0; i < wallNum; i++)
+                    for (int i = 0; i < selectedLevel.StartWallCount; i++)
                     {
                         Vector2Int index = new Vector2Int(Random.Range(0, grid.x), Random.Range(0, grid.y));
 
@@ -77,11 +71,18 @@ namespace HexaGridGame
                         }
 
                         tile.IsWall = true;
-                        GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
+                        GameObject wallObj = Instantiate(settingTable.GetRandomWall(), transform);
                         tile.SetWall(wallObj, wallParticle, false);
                     }
                 }
             });
+        }
+
+        public void SetLevel(int index)
+        {
+            selectedLevel = settingTable.GetLevel(index);
+            if (selectedLevel == null)
+                selectedLevel = settingTable.GetLevel(0);
         }
 
         public void OnTileClicked(HexaTile tile)
@@ -92,7 +93,7 @@ namespace HexaGridGame
 
             // Tile is Obstacle
             tile.IsWall = true;
-            GameObject wallObj = Instantiate(wallPrefabs[Random.Range(0, wallPrefabs.Length)], transform);
+            GameObject wallObj = Instantiate(settingTable.GetRandomWall(), transform);
             tile.SetWall(wallObj, wallParticle);
             //wallObj.transform.position += tile.transform.position;
             //wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
@@ -192,7 +193,7 @@ namespace HexaGridGame
 
                 for (int j = 0; j < grid.x; j++)
                 {
-                    var target = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
+                    var target = settingTable.GetRandomTile();
 
                     var tile = Instantiate(target, transform);
                     tile.transform.localPosition = new Vector3(x + j * xInterval, 0, z * zInterval);
@@ -226,7 +227,7 @@ namespace HexaGridGame
 
             foreach (var escapeTile in escapeTiles)
             {
-                var fx = Instantiate(failTileParticle, escapeTile.transform);
+                var fx = Instantiate(settingTable.GetFailTileFX(), escapeTile.transform);
                 fx.transform.localPosition = new Vector3(0, 0.01f, 0);
                 fx.transform.localRotation = Quaternion.identity;
             }

@@ -7,6 +7,15 @@ namespace HexaGridGame
     [CreateAssetMenu(fileName = "ManagerSettingTable", menuName = "HexaTile/ManagerSettingTable")]
     public class TileManagerSettingTable : ScriptableObject
     {
+        [System.Serializable]
+        public class Level
+        {
+            [SerializeField] private int startWallCount;
+            public int StartWallCount => startWallCount;
+        }
+
+        [SerializeField] private Level[] levels;
+
         [Header("Tile")]
         [SerializeField] private HexaTile[] tilePrefabs;
         [SerializeField] private ParticleSystem failTileFX;
@@ -51,6 +60,14 @@ namespace HexaGridGame
         public ParticleSystem GetFailTileFX()
         {
             return failTileFX;
+        }
+
+        public Level GetLevel(int index)
+        {
+            if (index == Mathf.Clamp(index, 0, levels.Length - 1))
+                return levels[index];
+            else
+                return null;
         }
     }
 }

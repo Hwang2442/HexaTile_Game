@@ -26,7 +26,7 @@ namespace HexaGridGame
 
             HexaTile start = currentTile;
 
-            opened.Add(Manager.player.Tile);
+            opened.Add(Manager.Player.Tile);
 
             while (opened.Count > 0)
             {
@@ -73,7 +73,6 @@ namespace HexaGridGame
                 {
                     while (currentTile != start)
                     {
-                        //currentTile.Renderer.color = Color.green;
                         path.Add(currentTile);
                         currentTile = currentTile.Parent;
                     }
@@ -87,11 +86,10 @@ namespace HexaGridGame
 
         int GetDistance(HexaTile from, HexaTile to)
         {
-            int y = Mathf.Abs(to.IndexY - from.IndexY);
             int x = 0;
+            int y = Mathf.Abs(to.IndexY - from.IndexY);
 
             int minX = 0, maxX = 0;
-
             int range = y / 2;
 
             if (y % 2 == 0)
@@ -115,16 +113,12 @@ namespace HexaGridGame
             }
 
             minX = Mathf.Max(0, minX);
-            maxX = Mathf.Min(Manager.grid.x - 1, maxX);
+            maxX = Mathf.Min(Manager.Grid.x - 1, maxX);
 
             if (to.IndexX < minX)
-            {
                 x = minX - to.IndexX;
-            }
             else if (to.IndexX > maxX)
-            {
                 x = to.IndexX - maxX;
-            }
 
             return x + y;
         }

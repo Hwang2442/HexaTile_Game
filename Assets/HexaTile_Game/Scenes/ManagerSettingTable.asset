@@ -12,3 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98ca1751c9eb6df4688fd6fcf0bac9e3, type: 3}
   m_Name: ManagerSettingTable
   m_EditorClassIdentifier: 
+  levels:
+  - startWallCount: 18
+  - startWallCount: 14
+  - startWallCount: 11
+  - startWallCount: 9
+  - startWallCount: 5
+  tilePrefabs:
+  - {fileID: 4508058096293697199, guid: e9c5ac6773bbd1249a020311934e70e3, type: 3}
+  - {fileID: 5510971801799489731, guid: 35b3fd434ef1a0e418d73d0d57bf5de3, type: 3}
+  - {fileID: -4234596514769838850, guid: cbb611c4e2d14444388f52c9677bf07b, type: 3}
+  - {fileID: -553241539646051674, guid: 1455d923c6c12544badd056991f0c72f, type: 3}
+  - {fileID: 366790366285697427, guid: 1a99472b7565ee741af7d86b63255a0d, type: 3}
+  failTileFX: {fileID: 3753057226582827969, guid: 7ac94ab2718e97f4e8544c4e9de05540,
+    type: 3}
+  wallPrefabs:
+  - {fileID: 1548367008505710, guid: 7686b66f8d809f04d98e5017065689e0, type: 3}
+  - {fileID: 1820239345728806, guid: 88a30fb187f46b34dba149003bc390f9, type: 3}
+  - {fileID: 5528282262591905215, guid: 196820138b51c514e84652c853a24a73, type: 3}
+  - {fileID: 6909898631687818119, guid: 176f5e1b1c6bfef419bfb721759e4239, type: 3}

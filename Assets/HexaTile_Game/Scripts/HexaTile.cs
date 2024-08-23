@@ -64,9 +64,9 @@ namespace HexaGridGame
                     int x = IndexX + direction[i, 1];
                     int y = IndexY + direction[i, 0];
 
-                    if (x >= 0 && y >= 0 && x < Manager.grid.x && y < Manager.grid.y)
+                    if (x >= 0 && y >= 0 && x < Manager.Grid.x && y < Manager.Grid.y)
                     {
-                        neighbours.Add(Manager.tiles[y, x]);
+                        neighbours.Add(Manager.Tiles[y, x]);
                     }
                 }
 

@@ -47,13 +47,11 @@ namespace HexaGridGame
             textValueObstacle.text = val.ToString();
         }
 
-        public void OnClickPlay()
+        public void OnClickPlay(int level)
         {
             panel.SetActive(false);
 
-            gameManager.grid = new Vector2Int(int.Parse(textValueX.text), int.Parse(textValueY.text));
-            gameManager.wallNum = int.Parse(textValueObstacle.text);
-
+            gameManager.SetLevel(level);
             gameManager.gameObject.SetActive(true);
         }
 
