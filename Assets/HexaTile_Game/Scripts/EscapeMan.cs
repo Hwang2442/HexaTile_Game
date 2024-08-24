@@ -19,7 +19,6 @@ namespace HexaGridGame
         private void Start()
         {
             animator = GetComponent<Animator>();
-            Debug.Log("start");
         }
 
         private void OnDestroy()

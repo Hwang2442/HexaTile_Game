@@ -14,6 +14,8 @@ namespace HexaGridGame
         private const float xInterval = 1.905354f;
         private const float zInterval = 1.65f;
 
+        [SerializeField] private int stepCount = 0;
+
         [Header("Setting")]
         [SerializeField] private TileManagerSettingTable settingTable;
         [SerializeField] private TileManagerSettingTable.Level selectedLevel;
@@ -36,11 +38,13 @@ namespace HexaGridGame
         public HexaTile[,] Tiles => tiles;
         public Vector2Int Grid => grid;
         public EscapeMan Player => player;
+        public int StepCount => stepCount;
 
         private void Start()
         {
             SoundManager.Instance.Play("BGM", 0.5f);
 
+            stepCount = 0;
             HexaTile.Manager = this;
             HexaTile.IsTouch = true;
             MainCam = Camera.main;
@@ -95,14 +99,8 @@ namespace HexaGridGame
             tile.IsWall = true;
             GameObject wallObj = Instantiate(settingTable.GetRandomWall(), transform);
             tile.SetWall(wallObj, wallParticle);
-            //wallObj.transform.position += tile.transform.position;
-            //wallObj.transform.DOScale(wallObj.transform.localScale, 0.1f).From(0).SetEase(Ease.OutCirc).OnComplete(() =>
-            //{
-            //    SoundManager.Instance.PlayOneShot("Wall");
-            //});
 
-            //wallParticle.transform.position = tile.transform.position;
-            //wallParticle.Play();
+            ++stepCount;
 
             // FindPath
             int count = 999;

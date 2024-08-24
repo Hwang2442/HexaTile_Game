@@ -4,55 +4,50 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using TMPro;
+
 namespace HexaGridGame
 {
     public class Demo : MonoBehaviour
     {
-        public TileGameManager gameManager;
+        [SerializeField] private TileGameManager gameManager;
 
-        [Space]
-        public GameObject panel;
+        [Header("UI")]
+        [SerializeField] private GameObject StartPanel;
+        [SerializeField] private GameObject EndPanel;
 
-        [Space]
-        public Slider sliderX;
-        public Slider sliderY;
-        public Slider sliderObstacle;
+        [Header("Text")]
+        [SerializeField] private TextMeshProUGUI infoText;
+        [SerializeField] private TextMeshProUGUI stepCountText;
 
-        [Space]
-        public Text textValueX;
-        public Text textValueY;
-        public Text textValueObstacle;
-
-        private void Start()
+        private void Awake()
         {
-            
-        }
+            gameManager.gameObject.SetActive(false);
 
-        public void SliderValueSyncX(float x)
-        {
-            textValueX.text = x.ToString();
-
-            sliderObstacle.maxValue = Mathf.CeilToInt(sliderX.value * sliderY.value * 0.5f) - 1;
-            sliderObstacle.value = 0;
-        }
-        public void SliderValueSyncY(float y)
-        {
-            textValueY.text = y.ToString();
-
-            sliderObstacle.maxValue = Mathf.CeilToInt(sliderX.value * sliderY.value * 0.5f) - 1;
-            sliderObstacle.value = 0;
-        }
-        public void SliderValueSyncObstacle(float val)
-        {
-            textValueObstacle.text = val.ToString();
+            StartPanel.SetActive(true);
+            EndPanel.SetActive(false);
         }
 
         public void OnClickPlay(int level)
         {
-            panel.SetActive(false);
+            StartPanel.SetActive(false);
 
             gameManager.SetLevel(level);
             gameManager.gameObject.SetActive(true);
+        }
+
+        public void OnGameClear()
+        {
+            EndPanel.SetActive(true);
+            infoText.text = "CLEAR";
+            stepCountText.text = string.Format("STEP COUNT: {0}", gameManager.StepCount);
+        }
+
+        public void OnGameFailed()
+        {
+            EndPanel.SetActive(true);
+            infoText.text = "FAIL";
+            stepCountText.text = string.Format("STEP COUNT: {0}", gameManager.StepCount);
         }
 
         public void OnClickReload()
